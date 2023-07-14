@@ -1,0 +1,14 @@
+.elements__img {
+    overflow: hidden;
+    object-fit: fill;
+    width: 100%;
+    height: 288px;
+}
+.elements__img:hover{
+    cursor: pointer;
+}
+@media all and (max-width:768px) and (min-width:320px) {
+    .elements__img {
+        height: 282px;
+    }
+}

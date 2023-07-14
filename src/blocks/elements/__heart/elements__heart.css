@@ -1,0 +1,19 @@
+.elements__heart {
+    padding: 0;
+    background-image: url(../../../images/Group.svg);
+    width: 22px;
+    height: 19px;
+    border: 0 none;
+    background-color: white;
+    margin-top: 30px;
+}
+
+.elements__heart:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.elements__heart:active {
+    opacity: 1;
+    background-image: url(../../../images/Union.png);
+}

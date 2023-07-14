@@ -1,0 +1,7 @@
+.elements__bottom {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    justify-content: space-between;
+    padding-right: 20px;
+}
