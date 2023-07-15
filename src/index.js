@@ -1,7 +1,8 @@
 import './index.css'
 import { enableValidation } from './components/validate.js'
-import { addCard } from './components/card';
-import { closePopup,openPopup } from './components/modal';
+import { closePopup, openPopup } from './components/modal';
+import { createCardList } from './components/card'
+import { createCard, changeAvatarApi, changeNameApi, userApi } from './components/api';
 const formElementAdd = document.querySelector('#form-add');
 const elementsContainer = document.querySelector('.elements');
 const inputPlace = formElementAdd.querySelector('#place-name-input')
@@ -16,7 +17,11 @@ const avtorName = formElementProf.querySelector('#name-input');
 const avtorDiscription = formElementProf.querySelector('#description-input');
 const profileName = document.querySelector('.profile__name')
 const profileDiscription = document.querySelector('.profile__description')
-const formList = document.querySelectorAll('.form');
+const profileAvatarImg = document.querySelector('.profile__avatar')
+const profileAvatar = document.querySelector('.profile__overlay')
+const popupChangeAvtor = document.querySelector('#changeAvatar')
+const profileSrcAvatar = document.querySelector('#src-avatar-input')
+const formChangeAvatar = document.querySelector('#form-changeAvatar')
 enableValidation({
     formSelector: '.form',
     inputSelector: '.form__input',
@@ -29,11 +34,20 @@ function addItem(evt) {
     evt.preventDefault();
     const place = inputPlace.value;
     const srcPlace = inputSrcPlace.value;
-    elementsContainer.prepend(addCard(place, srcPlace))
+    const btn = formElementAdd.querySelector('.form__button')
+    renderLoading(true, btn)
+    createCard(place, srcPlace)
+        .then(() => {
+            window.location.reload();
+        })
+        .finally(() => {
+            renderLoading(false, btn)
+        })
     closePopup(popupNewCard)
     evt.target.reset()
 }
-formElementAdd.addEventListener('submit', addItem);
+formElementAdd.addEventListener('submit', addItem)
+/* открыть попуп с созданием новой карточки */
 btnNew.addEventListener('click', function () {
     openPopup(popupNewCard);
     enableValidation({
@@ -45,11 +59,44 @@ btnNew.addEventListener('click', function () {
         errorClass: 'form__input-error_active'
     })
 });
+/*открыть попуп с данными о пользователе */
 btnEdit.addEventListener('click', function () {
     avtorName.value = profileName.textContent;
     avtorDiscription.value = profileDiscription.textContent;
     openPopup(popupProfile);
 });
+/* открыть попуп с сменой инконки пользователя */
+profileAvatar.addEventListener('click', function () {
+    openPopup(popupChangeAvtor)
+    profileSrcAvatar.value = profileAvatarImg.src
+    enableValidation({
+        formSelector: '.form',
+        inputSelector: '.form__input',
+        submitButtonSelector: '.form__button',
+        inactiveButtonClass: 'form__button_inactive',
+        inputErrorClass: 'form__input_error-redbot',
+        errorClass: 'form__input-error_active'
+    })
+})
+/* поменять иконку пользователя */
+function changeAvatar(evt) {
+    evt.preventDefault();
+    const newAvatar = profileSrcAvatar.value
+    const btn = formChangeAvatar.querySelector('.form__button')
+    renderLoading(true, btn)
+    changeAvatarApi(newAvatar)
+        .then(() => {
+            closePopup(popupChangeAvtor)
+            printName()
+        })
+        .finally(() => {
+            renderLoading(false, btn)
+        })
+}
+
+
+formChangeAvatar.addEventListener('submit', changeAvatar)
+/*закрыть попап на крестик */
 closeIcons.forEach(function (btn) {
     const popup = btn.closest(('.popup'))
     btn.addEventListener('click', () => closePopup(popup));
@@ -59,6 +106,53 @@ function handleFormSubmit(evt) {
     evt.preventDefault();
     profileName.textContent = avtorName.value;
     profileDiscription.textContent = avtorDiscription.value;
+    changeName(avtorName.value, avtorDiscription.value)
     closePopup(popupProfile)
 }
 formElementProf.addEventListener('submit', handleFormSubmit);
+/*функция смены данных пользователя пользователя */
+function changeName(name, discription) {
+    let btn = formElementProf.querySelector('.form__button')
+    renderLoading(true, btn, btn)
+    changeNameApi(name, discription)
+        .then(() => {
+            printName()
+        })
+        .finally(() => {
+            renderLoading(false, btn, btn)
+        })
+}
+/* пишем  данные пользователя при загрузке страницы */
+function printName() {
+    userApi()
+        .then(res => res.json())
+        .then((result) => {
+            profileName.textContent = result.name;
+            profileDiscription.textContent = result.about;
+            profileAvatarImg.src = result.avatar
+        })
+}
+printName()
+/*рендер загрузки */
+function renderLoading(isLoading, btn) {
+    if (isLoading) {
+        btn.textContent += '...'
+    } else if (!isLoading) {
+        let button = btn.textContent.split('')
+        button.pop()
+        button.pop()
+        button.pop()
+        btn.textContent = button.join('')
+    }
+}
+
+
+/* для проверки*/
+function zap() {
+    userApi()
+        .then(res => res.json())
+        .then((result) => {
+            console.log(result);
+        });
+}
+zap()

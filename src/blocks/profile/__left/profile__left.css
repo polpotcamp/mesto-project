@@ -1,4 +1,5 @@
 .profile__left {
+    position: relative;
     display: flex;
     flex-direction: row;
 }

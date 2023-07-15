@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,19 +12,19 @@
     <div class="popup" id="editProfile">
         <div class="popup__container">
             <button type="button" class="popup__close-icon"></button>
-            <form  class="form" name="form-profile" id="form-profile" novalidate>
-                    <h2 class="form__title">Редактировать профиль</h2>
-                    <label class="form__field">
-                    <input type="text" required  minlength="2" maxlength="40" name="avtor-name" value="Жак-Ив Кусто" class="form__input "
-                        id="name-input">
-                        <span class="form__input-error name-input-error"></span>
-                    </label>
-                    <label class="form__field">
-                    <input type="text" required minlength="2" maxlength="200" name="avtor-discription" value="Исследователь океана" class="form__input"
-                        id="description-input">
-                        <span class="form__input-error description-input-error" ></span>
-                    </label>
-                    <button type="submit" class="form__button">Сохранить</button>
+            <form class="form" name="form-profile" id="form-profile" novalidate>
+                <h2 class="form__title">Редактировать профиль</h2>
+                <label class="form__field">
+                    <input type="text" required minlength="2" maxlength="40" name="avtor-name" value="Жак-Ив Кусто"
+                        class="form__input " id="name-input">
+                    <span class="form__input-error name-input-error"></span>
+                </label>
+                <label class="form__field">
+                    <input type="text" required minlength="2" maxlength="200" name="avtor-discription"
+                        value="Исследователь океана" class="form__input" id="description-input">
+                    <span class="form__input-error description-input-error"></span>
+                </label>
+                <button type="submit" class="form__button">Сохранить</button>
             </form>
         </div>
         <div class="popup__overlay"></div>
@@ -32,18 +33,33 @@
         <div class="popup__container">
             <button type="button" class="popup__close-icon"></button>
             <form class="form" name="form-addcard" id="form-add" novalidate>
-                    <h2 class="form__title">Новое место</h2>
-                    <label class="form__field">
-                    <input type="text" required minlength="2" maxlength="200" name="place-name" placeholder="Название" class="form__input"
-                        id="place-name-input">
-                        <span class="form__input-error place-name-input-error"></span>
-                        </label>
-                        <label class="form__field">
-                    <input type="url" required  name="src-name" placeholder="Ссылка на картинку" class="form__input"
+                <h2 class="form__title">Новое место</h2>
+                <label class="form__field">
+                    <input type="text" required minlength="2" maxlength="200" name="place-name" placeholder="Название"
+                        class="form__input" id="place-name-input">
+                    <span class="form__input-error place-name-input-error"></span>
+                </label>
+                <label class="form__field">
+                    <input type="url" required name="src-name" placeholder="Ссылка на картинку" class="form__input"
                         id="src-name-input">
-                        <span class="form__input-error src-name-input-error"></span>
-                        </label>
-                    <button type="submit" class="form__button">Создать</button>
+                    <span class="form__input-error src-name-input-error"></span>
+                </label>
+                <button type="submit" class="form__button">Создать</button>
+            </form>
+        </div>
+        <div class="popup__overlay"></div>
+    </div>
+    <div class="popup" id="changeAvatar">
+        <div class="popup__container">
+            <button type="button" class="popup__close-icon"></button>
+            <form class="form" name="form-changeAvatar" id="form-changeAvatar" novalidate>
+                <h2 class="form__title">Обновить аватар</h2>
+                <label class="form__field">
+                    <input type="url" required  name="src-avatar" placeholder="Название"
+                        class="form__input" id="src-avatar-input">
+                    <span class="form__input-error src-avatar-input-error"></span>
+                </label>
+                <button type="submit" class="form__button">Сохранить</button>
             </form>
         </div>
         <div class="popup__overlay"></div>
@@ -51,7 +67,7 @@
     <div class="popup" id="popup-img">
         <div class="popup__container-img">
             <button type="button" class="popup__close-icon popup__close-icon_img"></button>
-            <img   class="popup__img">
+            <img class="popup__img">
             <p class="popup__img-name"></p>
         </div>
         <div class="popup__overlay popup__overlay-img"></div>
@@ -62,7 +78,10 @@
     <main class="container">
         <section class="profile">
             <div class="profile__left">
-                <div class="profile__avatar"></div>
+                    <img class="profile__avatar">
+                    <div class="profile__overlay">
+                    <div class="profile__icon"> </div>
+                </div>
                 <div class="profile__info">
                     <div class="profile__top">
                         <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -75,7 +94,7 @@
             </button>
         </section>
         <section class="elements">
-           
+
         </section>
     </main>
     <footer class="footer">
@@ -87,7 +106,10 @@
             <button class="elements__delet-icon"></button>
             <div class="elements__bottom">
                 <h2 class="elements__discritpion"></h2>
-                <button type="button" class="elements__heart"></button>
+                <div class="elements__like">
+                    <button type="button" class="elements__heart"></button>
+                    <p class="elements__likes"></p>
+                </div>
             </div>
         </div>
     </template>

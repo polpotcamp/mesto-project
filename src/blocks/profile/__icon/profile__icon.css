@@ -1,0 +1,15 @@
+.profile__icon{
+    background-image: url(../../../images/Vector.png);
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    left: 47px;
+    top: 47px;
+    opacity: 100%;
+}
+@media all and (max-width:768px) and (min-width:320px){
+    .profile__icon{
+        left: 85px;
+        top: 50px;
+    }
+}
