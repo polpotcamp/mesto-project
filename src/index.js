@@ -37,9 +37,12 @@ function addItem(evt) {
     const btn = formElementAdd.querySelector('.form__button')
     renderLoading(true, btn)
     createCard(place, srcPlace)
-        .then(() => {
-            window.location.reload();
+        .then((res) => {
+            if (res.ok) {
+                window.location.reload();
+            }
         })
+        .catch((err) => console.log(err))
         .finally(() => {
             renderLoading(false, btn)
         })
@@ -85,10 +88,13 @@ function changeAvatar(evt) {
     const btn = formChangeAvatar.querySelector('.form__button')
     renderLoading(true, btn)
     changeAvatarApi(newAvatar)
-        .then(() => {
-            closePopup(popupChangeAvtor)
-            printName()
+        .then((res) => {
+            if (res.ok) {
+                closePopup(popupChangeAvtor)
+                printName()
+            }
         })
+        .catch((err) => console.log(err))
         .finally(() => {
             renderLoading(false, btn)
         })
@@ -115,9 +121,12 @@ function changeName(name, discription) {
     let btn = formElementProf.querySelector('.form__button')
     renderLoading(true, btn, btn)
     changeNameApi(name, discription)
-        .then(() => {
-            printName()
+        .then((res) => {
+            if (res.ok) {
+                printName()
+            }
         })
+        .catch((err) => console.log(err))
         .finally(() => {
             renderLoading(false, btn, btn)
         })
@@ -125,12 +134,17 @@ function changeName(name, discription) {
 /* пишем  данные пользователя при загрузке страницы */
 function printName() {
     userApi()
-        .then(res => res.json())
+        .then((res) => {
+            if (res.ok) {
+                return res.json()
+            }
+        })
         .then((result) => {
             profileName.textContent = result.name;
             profileDiscription.textContent = result.about;
             profileAvatarImg.src = result.avatar
         })
+        .catch((err) => console.log(err))
 }
 printName()
 /*рендер загрузки */
@@ -146,13 +160,3 @@ function renderLoading(isLoading, btn) {
     }
 }
 
-
-/* для проверки*/
-function zap() {
-    userApi()
-        .then(res => res.json())
-        .then((result) => {
-            console.log(result);
-        });
-}
-zap()
