@@ -1,43 +1,93 @@
 import { openPopup } from "./modal";
-import { cardsApi, userApi, addLikeApi, deletLikeApi, deletCardApi } from "./api";
-const elementsContainer = document.querySelector('.elements');
+import { requestUserApi, addLikeApi, deletLikeApi, deletCardApi } from "./api";
+import { popupImage, popupImg, popupImageName,profileName } from "./utils";
 function openPopupCard(popupCard, name, src) {
-  const popupImg = document.querySelector('#popup-img');
-  const popupImage = document.querySelector('.popup__img');
-  const popupImageName = document.querySelector('.popup__img-name');
-  popupCard.querySelector('.elements__img').addEventListener('click', function () {
-    popupImage.src = `${src}`;
-    popupImage.alt = `${name}`;
-    popupImageName.textContent = popupCard.querySelector('.elements__discritpion').textContent
-    openPopup(popupImg);
-  })
+  popupImage.src = `${src}`;
+  popupImage.alt = `${name}`;
+  popupImageName.textContent = popupCard.querySelector('.elements__discritpion').textContent
+  openPopup(popupImg);
 }
 /* удалить карточку */
 function deletCard(card, id) {
-  card.querySelector('.elements__delet-icon').addEventListener('click', function () {
-    return deletCardApi(id)
-      .then((res) => {
-        if (res.ok) {
-          card.remove()
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  })
+  return deletCardApi(id)
+    .then(() => {
+      card.remove()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 /*лайк карточке */
-function likeCard(heart, id, likes, user, like, numberlikes) {
-  heart.addEventListener('click', function (evt) {
+function likeCard(heart, id, numberlikes,evt) {
     if (heart.classList.contains('elements__heart_active')) {
       deletLikeApi(id)
-        .then((res) => {
-          if (res.ok) {
-            for (let i = 0; i < likes; i++) {
-              console.log(numberlikes.textContent)
-              if (like[i] === user) {
-                like[i].remove();
-              }
+        .then((result) => {
+          numberlikes.textContent = result.likes.length
+        })
+        .catch((err) => console.log(err))
+
+    } else if (heart.classList.contains('elements__heart_active') === false) {
+      addLikeApi(id)
+        .then((result) => {
+          numberlikes.textContent= result.likes.length
+        })
+        .catch((err) => console.log(err))
+    }
+    evt.target.classList.toggle('elements__heart_active');
+}
+/* отрисовываем какие карточки лайкнул пользователь */
+function printLikes(likes, like, heart) {
+      for (let i = 0; i < likes; i++) {
+        if (profileName.textContent === like[i].name) {
+          heart.classList.add('elements__heart_active')
+        }
+      }
+}
+/* функция проверяет автора карточки */
+function checkAuthor( author,del) {
+  console.log()
+      if (profileName.textContent != author) {
+        del.remove()
+      }
+}
+/* функция добавить карточки */
+function addCard(item) {
+  const placeTemplate = document.querySelector('#place-template').content;
+  const itemElement = placeTemplate.querySelector('#elements__item').cloneNode(true);
+  const ItemImg = itemElement.querySelector('.elements__img')
+  const numberlikes = itemElement.querySelector('.elements__likes')
+  const del = itemElement.querySelector('.elements__delet-icon');
+  const heart = itemElement.querySelector('.elements__heart')
+  ItemImg.src = `${item.src}`;
+  ItemImg.alt = `${item.name}`;
+  itemElement.querySelector('.elements__discritpion').textContent = item.name;
+  numberlikes.textContent = item.likes;
+  /*открыть попап картинки */
+  ItemImg.addEventListener('click', function () {
+    openPopupCard(itemElement, item.name, item.src)
+  })
+  /* лайк */
+  heart.addEventListener('click', function (evt) {
+    likeCard(heart, item.id, numberlikes,evt)
+  })
+  /* удалить карточку*/
+  del.addEventListener('click', function () {
+    deletCard(itemElement, item.id)
+  })
+  /*провека кто создатель */
+  checkAuthor(item.author,del)
+  /* отрисовываю кнопки лайка */
+  printLikes(item.likes, item.like, heart)
+  return itemElement
+}
+export { addCard }
+/* на всякий пожарный
+ if (heart.classList.contains('elements__heart_active')) {
+      deletLikeApi(id)
+        .then(() => {
+          for (let i = 0; i < likes; i++) {
+            if (like[i] === user) {
+              like[i].remove();
             }
           }
         })
@@ -48,97 +98,13 @@ function likeCard(heart, id, likes, user, like, numberlikes) {
 
     } else if (heart.classList.contains('elements__heart_active') === false) {
       addLikeApi(id)
-        .then((res) => {
-          if (res.ok) {
-            heart.classList.add('elements__heart_active')
-            like.push(user)
-          }
+        .then(() => {
+          heart.classList.add('elements__heart_active')
+          like.push(user)
         })
         .then(() => {
           numberlikes.textContent++
         })
         .catch((err) => console.log(err))
     }
-    evt.target.classList.toggle('elements__heart_active');
-
-  })
-}
-/* отрисовываем какие карточки лайкнул пользователь */
-function printLikes(likes, like, heart) {
-  return userApi()
-    .then((res) => {
-      if (res.ok) {
-       return res.json()
-      }
-    })
-    .then((result) => {
-      for (let i = 0; i < likes; i++) {
-        if (result.name === like[i].name) {
-          heart.classList.add('elements__heart_active')
-        }
-      }
-    })
-    .catch((err) => console.log(err))
-}
-/* функция проверяет автора карточки */
-function checkAuthor(author, del) {
-  userApi()
-    .then((res) => {
-      if (res.ok) {
-        return res.json()
-      }
-    })
-    .then((result) => {
-      if (author !== result.name) {
-        del.remove()
-      }
-    })
-    .catch((err) => console.log(err))
-}
-/* функция добавить карточки */
-function addCard(name, src, likes, author, id, user, like) {
-  const placeTemplate = document.querySelector('#place-template').content;
-  const itemElement = placeTemplate.querySelector('#elements__item').cloneNode(true);
-  itemElement.querySelector('.elements__img').src = `${src}`;
-  itemElement.querySelector('.elements__img').alt = `${name}`;
-  itemElement.querySelector('.elements__discritpion').textContent = name;
-  const numberlikes = itemElement.querySelector('.elements__likes')
-  numberlikes.textContent = likes;
-  let del = itemElement.querySelector('.elements__delet-icon');
-  const heart = itemElement.querySelector('.elements__heart')
-  /* лайк */
-  likeCard(heart, id, likes, user, like, numberlikes)
-  /* удалить карточку*/
-  deletCard(itemElement, id)
-  /*открыть попап картинки */
-  openPopupCard(itemElement, name, src)
-  /*провека кто создатель */
-  checkAuthor(author, del)
-  /* отрисовываю кнопки лайка */
-  printLikes(likes, like, heart)
-  return itemElement;
-}
-
-function createCardList() {
-   cardsApi()
-   .then((res) => {
-    if (res.ok) {
-      return res.json()
-    }
-  })
-    .then((result) => {
-      for (let i = 0; i < result.length; i++) {
-        elementsContainer.append(addCard(result[i].name,
-          result[i].link,
-          result[i].likes.length,
-          result[i].owner.name,
-          result[i]._id,
-          result[i].owner,
-          result[i].likes
-        ))
-      }
-    })
-    .catch((err) => console.log(err))
-}
-createCardList()
-export { createCardList }
+    evt.target.classList.toggle('elements__heart_active'); */

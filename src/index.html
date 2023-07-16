@@ -15,16 +15,17 @@
             <form class="form" name="form-profile" id="form-profile" novalidate>
                 <h2 class="form__title">Редактировать профиль</h2>
                 <label class="form__field">
-                    <input type="text" required minlength="2" maxlength="40" name="avtor-name" value="Жак-Ив Кусто"
-                        class="form__input " id="name-input">
+                    <input type="text"   required minlength="2" maxlength="40" name="avtor-name" class="form__input "
+                        id="name-input"  >
                     <span class="form__input-error name-input-error"></span>
                 </label>
                 <label class="form__field">
                     <input type="text" required minlength="2" maxlength="200" name="avtor-discription"
-                        value="Исследователь океана" class="form__input" id="description-input">
+                        class="form__input" id="description-input"  >
                     <span class="form__input-error description-input-error"></span>
                 </label>
-                <button type="submit" class="form__button">Сохранить</button>
+                <button disabled type="submit" class="form__button">Сохранить<span
+                        class="form-btnload">...</span></button>
             </form>
         </div>
         <div class="popup__overlay"></div>
@@ -35,16 +36,16 @@
             <form class="form" name="form-addcard" id="form-add" novalidate>
                 <h2 class="form__title">Новое место</h2>
                 <label class="form__field">
-                    <input type="text" required minlength="2" maxlength="200" name="place-name" placeholder="Название"
-                        class="form__input" id="place-name-input">
+                    <input type="text" required minlength="2" maxlength="200" name="place-name" class="form__input"
+                        id="place-name-input" placeholder="Название">
                     <span class="form__input-error place-name-input-error"></span>
                 </label>
                 <label class="form__field">
-                    <input type="url" required name="src-name" placeholder="Ссылка на картинку" class="form__input"
-                        id="src-name-input">
+                    <input type="url" required name="src-name" class="form__input" id="src-name-input" placeholder="Ссылка на картинку">
                     <span class="form__input-error src-name-input-error"></span>
                 </label>
-                <button type="submit" class="form__button">Создать</button>
+                <button disabled type="submit" class="form__button">Создать<span
+                        class="form-btnload">...</span></button>
             </form>
         </div>
         <div class="popup__overlay"></div>
@@ -55,11 +56,11 @@
             <form class="form" name="form-changeAvatar" id="form-changeAvatar" novalidate>
                 <h2 class="form__title">Обновить аватар</h2>
                 <label class="form__field">
-                    <input type="url" required  name="src-avatar" placeholder="Название"
-                        class="form__input" id="src-avatar-input">
+                    <input type="url" required name="src-avatar" placeholder="Название" class="form__input"
+                        id="src-avatar-input">
                     <span class="form__input-error src-avatar-input-error"></span>
                 </label>
-                <button type="submit" class="form__button">Сохранить</button>
+                <button disabled="submit" class="form__button">Сохранить<span class="form-btnload">...</span></button>
             </form>
         </div>
         <div class="popup__overlay"></div>
@@ -78,8 +79,8 @@
     <main class="container">
         <section class="profile">
             <div class="profile__left">
-                    <img class="profile__avatar">
-                    <div class="profile__overlay">
+                <img class="profile__avatar">
+                <div class="profile__overlay">
                     <div class="profile__icon"> </div>
                 </div>
                 <div class="profile__info">

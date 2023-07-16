@@ -33,7 +33,7 @@
       hideInputError(formElement, inputElement,item);
     }
   };
-  const setEventListeners = (formElement,item,inputList,buttonElement) => {
+  const setEventListeners = (formElement,item,inputList,buttonElement,) => {
     toggleButtonState(inputList, buttonElement,item);
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', function () {
@@ -50,4 +50,5 @@
         setEventListeners(formElement,item,inputList,buttonElement);
     });
   };
+
   export {enableValidation}

@@ -1,5 +1,5 @@
 /* отправялем данные о новой карточку*/
-function createCard(newCardName, newCardLink) {
+function createCardApi(newCardName, newCardLink) {
     return fetch('https://nomoreparties.co/v1/plus-cohort-26/cards', {
         method: 'POST',
         headers: {
@@ -10,6 +10,12 @@ function createCard(newCardName, newCardLink) {
             name: newCardName,
             link: newCardLink
         })
+    })
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
     })
         
 }
@@ -25,6 +31,12 @@ function changeAvatarApi(newAvatar){
             avatar: newAvatar
         })
     })
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
 }
 /* меняем данные пользователя */
 function changeNameApi(name,discription){
@@ -39,22 +51,40 @@ function changeNameApi(name,discription){
             about: discription
         })
     })
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
 }
 /* запрашиваем данные о пользователе */
-function userApi(){
+function requestUserApi(){
     return fetch('https://nomoreparties.co/v1/plus-cohort-26/users/me', {
         headers: {
             authorization: '019bbcb5-3c25-4998-9d5f-ecd3bb7b11a2'
         }
     })
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
 }
 /* запрашиваем данные о карточках */
-function cardsApi(){
+function requestCardsApi(){
     return fetch('https://nomoreparties.co/v1/plus-cohort-26/cards ', {
     headers: {
       authorization: '019bbcb5-3c25-4998-9d5f-ecd3bb7b11a2'
     }
   })
+  .then((res) => {
+    if (res.ok) {
+        return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+})
 }
 /* добавить лайк */
 function addLikeApi(id){
@@ -64,6 +94,12 @@ function addLikeApi(id){
           authorization: '019bbcb5-3c25-4998-9d5f-ecd3bb7b11a2'
         }
       })
+      .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
 }
 /*удалить лайк */
 function deletLikeApi(id){
@@ -73,6 +109,12 @@ function deletLikeApi(id){
           authorization: '019bbcb5-3c25-4998-9d5f-ecd3bb7b11a2'
         }
       })
+      .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
 }
 /* удалить карточку */
 function deletCardApi(id){
@@ -82,5 +124,11 @@ function deletCardApi(id){
           authorization: '019bbcb5-3c25-4998-9d5f-ecd3bb7b11a2'
         }
       })
+      .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
 }
-export{createCard,changeAvatarApi,changeNameApi,userApi,cardsApi,addLikeApi,deletLikeApi,deletCardApi}
+export{createCardApi,changeAvatarApi,changeNameApi,requestUserApi,requestCardsApi,addLikeApi,deletLikeApi,deletCardApi}
