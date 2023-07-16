@@ -15,13 +15,15 @@
             <form class="form" name="form-profile" id="form-profile" novalidate>
                 <h2 class="form__title">Редактировать профиль</h2>
                 <label class="form__field">
-                    <input type="text"   required minlength="2" maxlength="40" name="avtor-name" class="form__input "
-                        id="name-input"  >
+                    <input type="text" pattern="^[a-zA-Zа-яА-Я -]+$" required minlength="2" maxlength="40"
+                        name="avtor-name" class="form__input " id="name-input"
+                        data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="form__input-error name-input-error"></span>
                 </label>
                 <label class="form__field">
-                    <input type="text" required minlength="2" maxlength="200" name="avtor-discription"
-                        class="form__input" id="description-input"  >
+                    <input type="text" pattern="^[a-zA-Zа-яА-Я -]+$" required minlength="2" maxlength="200"
+                        name="avtor-discription" class="form__input" id="description-input"
+                        data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="form__input-error description-input-error"></span>
                 </label>
                 <button disabled type="submit" class="form__button">Сохранить<span
@@ -36,12 +38,14 @@
             <form class="form" name="form-addcard" id="form-add" novalidate>
                 <h2 class="form__title">Новое место</h2>
                 <label class="form__field">
-                    <input type="text" required minlength="2" maxlength="200" name="place-name" class="form__input"
-                        id="place-name-input" placeholder="Название">
+                    <input type="text" pattern="^[a-zA-Zа-яА-Я -]+$" required minlength="2" maxlength="200"
+                        name="place-name" class="form__input" id="place-name-input" placeholder="Название"
+                        data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="form__input-error place-name-input-error"></span>
                 </label>
                 <label class="form__field">
-                    <input type="url" required name="src-name" class="form__input" id="src-name-input" placeholder="Ссылка на картинку">
+                    <input type="url" required name="src-name" class="form__input" id="src-name-input"
+                        placeholder="Ссылка на картинку">
                     <span class="form__input-error src-name-input-error"></span>
                 </label>
                 <button disabled type="submit" class="form__button">Создать<span

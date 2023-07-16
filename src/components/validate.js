@@ -27,6 +27,11 @@
     errorElement.textContent = '';
   };
   const checkInputValidity = (formElement, inputElement,item) => {
+    if(inputElement.validity.patternMismatch){
+      inputElement.setCustomValidity(inputElement.dataset.errorMessage)
+    }else{
+      inputElement.setCustomValidity("");
+    }
     if (!inputElement.validity.valid) {
       showInputError(formElement, inputElement, inputElement.validationMessage,item);
     } else {
