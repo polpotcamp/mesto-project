@@ -1,5 +1,5 @@
 import './index.css'
-import { enableValidation } from './components/validate.js'
+import { enableValidation,setSubmitButtonState } from './components/validate.js'
 import { closePopup, openPopup } from './components/modal';
 import { createCardApi, changeAvatarApi, changeNameApi, requestUserApi, requestCardsApi } from './components/api';
 import { addCard } from './components/card'
@@ -12,59 +12,48 @@ enableValidation({
     inputErrorClass: 'form__input_error-redbot',
     errorClass: 'form__input-error_active'
 })
-/* пишем  данные пользователя при загрузке страницы */
-function printName() {
-    requestUserApi()
-        .then((result) => {
-            utilits.profileName.textContent = result.name;
-            utilits.profileDiscription.textContent = result.about;
-            utilits.profileAvatarImg.src = result.avatar
-        })
-        .catch((err) => console.log(err))
-}
-const promises = [printName(), createCardList()]
-Promise.all(promises)
-function createCardList() {
-    requestCardsApi()
-        .then((result) => {
-            for (let i = 0; i < result.length; i++) {
-                utilits.elementsContainer.append(addCard({name:result[i].name,
-                  src: result[i].link,
-                  likes:result[i].likes.length,
-                  author: result[i].owner.name,
-                  id:result[i]._id,
-                  like:result[i].likes
+
+Promise.all([requestUserApi(), requestCardsApi()])
+    .then((result) => {
+        console.log(result)
+        utilits.profileName.textContent = result[0].name;
+        utilits.profileDiscription.textContent = result[0].about;
+        utilits.profileAvatarImg.src = result[0].avatar
+        for (let i = 0; i < result[1].length; i++) {
+            utilits.elementsContainer.append(addCard({
+                name: result[1][i].name,
+                src: result[1][i].link,
+                likes: result[1][i].likes.length,
+                authorId: result[1][i].owner._id,
+                id: result[1][i]._id,
+                like: result[1][i].likes,
+                userId: result[0]._id
             }))
-            }
-        })
-        .catch((err) => console.log(err))
-}
-function setSubmitButtonState(isFormValid, btn) {
-    if (isFormValid) {
-        btn.classList.remove('form__button_inactive');
-        btn.disabled = false
-    } else {
-        btn.classList.add('form__button_inactive');
-        btn.disabled = true
-    }
-}
+        }
+    })
+    .catch((err) => console.log(err))
 function addItem(evt) {
     evt.preventDefault();
     const place = utilits.inputPlace.value;
     const srcPlace = utilits.inputSrcPlace.value;
     renderLoading(true, utilits.btnAddCardLoad)
     createCardApi(place, srcPlace)
-        .then(() => {
-            utilits.elementsContainer.innerHTML = " "
-            utilits.container.append(utilits.elementsContainer)
-            createCardList()
+        .then((result) => {
+            utilits.elementsContainer.prepend(addCard({
+                name: result.name,
+                src: result.link,
+                likes: result.likes.length,
+                author: result.owner.name,
+                id: result._id,
+                like: result.likes
+            }))
             closePopup(utilits.popupNewCard)
             evt.target.reset()
+            setSubmitButtonState(false, utilits.btnAddCard)
         })
         .catch((err) => console.log(err))
         .finally(() => {
             renderLoading(false, utilits.btnAddCardLoad)
-            setSubmitButtonState(false, utilits.btnAddCard)
         })
 }
 
@@ -91,18 +80,16 @@ function changeAvatar(evt) {
     const newAvatar = utilits.profileSrcAvatar.value
     renderLoading(true, utilits.btnChangeAvatarLoad)
     changeAvatarApi(newAvatar)
-        .then(() => {
+        .then((result) => {
+            utilits.profileAvatarImg.src =result.avatar
             closePopup(utilits.popupChangeAvtor)
-            printName()
+            setSubmitButtonState(false, utilits.btnChangeAvatar)
         })
         .catch((err) => console.log(err))
         .finally(() => {
             renderLoading(false, utilits.btnChangeAvatarLoad)
-            setSubmitButtonState(false, utilits.btnChangeAvatar)
         })
 }
-
-
 utilits.formChangeAvatar.addEventListener('submit', changeAvatar)
 /*закрыть попап на крестик */
 utilits.closeIcons.forEach(function (btn) {
@@ -112,25 +99,19 @@ utilits.closeIcons.forEach(function (btn) {
 /* кнопка сохранить меняет имя жака кусто */
 function changeNameFrom(evt) {
     evt.preventDefault();
-    utilits.profileName.textContent = utilits.avtorName.value;
-    utilits.profileDiscription.textContent = utilits.avtorDiscription.value;
-    changeName(utilits.avtorName.value, utilits.avtorDiscription.value)
-    closePopup(utilits.popupProfile)
-}
-utilits.formElementProf.addEventListener('submit', changeNameFrom);
-/*функция смены данных пользователя пользователя */
-function changeName(name, discription) {
     renderLoading(true, utilits.btnChangeNameLoad)
-    changeNameApi(name, discription)
-        .then(() => {
-            utilits.profileName.textContent = name
-            utilits.profileDiscription.textContent = discription
+    changeNameApi(utilits.avtorName.value, utilits.avtorDiscription.value)
+        .then((result) => {
+            utilits.profileName.textContent = result.name
+            utilits.profileDiscription.textContent = result.about
         })
         .catch((err) => console.log(err))
         .finally(() => {
             renderLoading(false, utilits.btnChangeNameLoad)
         })
+    closePopup(utilits.popupProfile)
 }
+utilits.formElementProf.addEventListener('submit', changeNameFrom);
 /*рендер загрузки */
 function renderLoading(isLoading, btnload) {
     if (isLoading) {

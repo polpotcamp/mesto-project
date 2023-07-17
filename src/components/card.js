@@ -1,5 +1,5 @@
 import { openPopup } from "./modal";
-import { requestUserApi, addLikeApi, deletLikeApi, deletCardApi } from "./api";
+import {  addLikeApi, deletLikeApi, deletCardApi } from "./api";
 import { popupImage, popupImg, popupImageName,profileName } from "./utils";
 function openPopupCard(popupCard, name, src) {
   popupImage.src = `${src}`;
@@ -23,6 +23,7 @@ function likeCard(heart, id, numberlikes,evt) {
       deletLikeApi(id)
         .then((result) => {
           numberlikes.textContent = result.likes.length
+          evt.target.classList.toggle('elements__heart_active');
         })
         .catch((err) => console.log(err))
 
@@ -30,10 +31,10 @@ function likeCard(heart, id, numberlikes,evt) {
       addLikeApi(id)
         .then((result) => {
           numberlikes.textContent= result.likes.length
+          evt.target.classList.toggle('elements__heart_active');
         })
         .catch((err) => console.log(err))
     }
-    evt.target.classList.toggle('elements__heart_active');
 }
 /* отрисовываем какие карточки лайкнул пользователь */
 function printLikes(likes, like, heart) {
@@ -44,9 +45,8 @@ function printLikes(likes, like, heart) {
       }
 }
 /* функция проверяет автора карточки */
-function checkAuthor( author,del) {
-  console.log()
-      if (profileName.textContent != author) {
+function checkAuthor( authorId,del,userId) {
+      if (userId != authorId) {
         del.remove()
       }
 }
@@ -54,16 +54,16 @@ function checkAuthor( author,del) {
 function addCard(item) {
   const placeTemplate = document.querySelector('#place-template').content;
   const itemElement = placeTemplate.querySelector('#elements__item').cloneNode(true);
-  const ItemImg = itemElement.querySelector('.elements__img')
+  const itemImg = itemElement.querySelector('.elements__img')
   const numberlikes = itemElement.querySelector('.elements__likes')
   const del = itemElement.querySelector('.elements__delet-icon');
   const heart = itemElement.querySelector('.elements__heart')
-  ItemImg.src = `${item.src}`;
-  ItemImg.alt = `${item.name}`;
+  itemImg.src = `${item.src}`;
+  itemImg.alt = `${item.name}`;
   itemElement.querySelector('.elements__discritpion').textContent = item.name;
   numberlikes.textContent = item.likes;
   /*открыть попап картинки */
-  ItemImg.addEventListener('click', function () {
+  itemImg.addEventListener('click', function () {
     openPopupCard(itemElement, item.name, item.src)
   })
   /* лайк */
@@ -75,36 +75,9 @@ function addCard(item) {
     deletCard(itemElement, item.id)
   })
   /*провека кто создатель */
-  checkAuthor(item.author,del)
+  checkAuthor(item.authorId,del,item.userId)
   /* отрисовываю кнопки лайка */
   printLikes(item.likes, item.like, heart)
   return itemElement
 }
 export { addCard }
-/* на всякий пожарный
- if (heart.classList.contains('elements__heart_active')) {
-      deletLikeApi(id)
-        .then(() => {
-          for (let i = 0; i < likes; i++) {
-            if (like[i] === user) {
-              like[i].remove();
-            }
-          }
-        })
-        .then(() => {
-          numberlikes.textContent--
-        })
-        .catch((err) => console.log(err))
-
-    } else if (heart.classList.contains('elements__heart_active') === false) {
-      addLikeApi(id)
-        .then(() => {
-          heart.classList.add('elements__heart_active')
-          like.push(user)
-        })
-        .then(() => {
-          numberlikes.textContent++
-        })
-        .catch((err) => console.log(err))
-    }
-    evt.target.classList.toggle('elements__heart_active'); */

@@ -1,3 +1,4 @@
+
 /* отправялем данные о новой карточку*/
 function createCardApi(newCardName, newCardLink) {
     return fetch('https://nomoreparties.co/v1/plus-cohort-26/cards', {
@@ -16,8 +17,7 @@ function createCardApi(newCardName, newCardLink) {
             return res.json();
         }
         return Promise.reject(`Ошибка: ${res.status}`);
-    })
-        
+    })    
 }
 /* меняем аватар */
 function changeAvatarApi(newAvatar){

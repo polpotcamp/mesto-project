@@ -1,4 +1,13 @@
  /* валидация формы профиль */
+ function setSubmitButtonState(isFormValid, btn) {
+  if (isFormValid) {
+      btn.classList.remove('form__button_inactive');
+      btn.disabled = false
+  } else {
+      btn.classList.add('form__button_inactive');
+      btn.disabled = true
+  }
+}
  const toggleButtonState = (inputList, buttonElement,item) => {
     if (hasInvalidInput(inputList)) {
       buttonElement.classList.add(item.inactiveButtonClass);
@@ -56,4 +65,4 @@
     });
   };
 
-  export {enableValidation}
+  export {enableValidation,setSubmitButtonState}
