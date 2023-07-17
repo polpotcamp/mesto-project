@@ -1,5 +1,5 @@
 import './index.css'
-import { enableValidation,setSubmitButtonState } from './components/validate.js'
+import { enableValidation} from './components/validate.js'
 import { closePopup, openPopup } from './components/modal';
 import { createCardApi, changeAvatarApi, changeNameApi, requestUserApi, requestCardsApi } from './components/api';
 import { addCard } from './components/card'
@@ -49,7 +49,8 @@ function addItem(evt) {
             }))
             closePopup(utilits.popupNewCard)
             evt.target.reset()
-            setSubmitButtonState(false, utilits.btnAddCard)
+            utilits.btnAddCard.disabled=  true
+            utilits.btnAddCard.classList.add('form__button_inactive')
         })
         .catch((err) => console.log(err))
         .finally(() => {
@@ -83,7 +84,8 @@ function changeAvatar(evt) {
         .then((result) => {
             utilits.profileAvatarImg.src =result.avatar
             closePopup(utilits.popupChangeAvtor)
-            setSubmitButtonState(false, utilits.btnChangeAvatar)
+            utilits.btnChangeAvatar.disabled = true
+            utilits.btnChangeAvatar.classList.add('form__button_inactive');
         })
         .catch((err) => console.log(err))
         .finally(() => {
@@ -104,12 +106,12 @@ function changeNameFrom(evt) {
         .then((result) => {
             utilits.profileName.textContent = result.name
             utilits.profileDiscription.textContent = result.about
+            closePopup(utilits.popupProfile)
         })
         .catch((err) => console.log(err))
         .finally(() => {
             renderLoading(false, utilits.btnChangeNameLoad)
         })
-    closePopup(utilits.popupProfile)
 }
 utilits.formElementProf.addEventListener('submit', changeNameFrom);
 /*рендер загрузки */

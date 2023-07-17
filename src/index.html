@@ -15,7 +15,7 @@
             <form class="form" name="form-profile" id="form-profile" novalidate>
                 <h2 class="form__title">Редактировать профиль</h2>
                 <label class="form__field">
-                    <input type="text" pattern="^[a-zA-Zа-яА-Я -]+$" required minlength="2" maxlength="40"
+                    <input type="text" pattern="^[a-zA-Zа-яА-Я - \s]+$" required minlength="2" maxlength="40"
                         name="avtor-name" class="form__input " id="name-input"
                         data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="form__input-error name-input-error"></span>
@@ -38,7 +38,7 @@
             <form class="form" name="form-addcard" id="form-add" novalidate>
                 <h2 class="form__title">Новое место</h2>
                 <label class="form__field">
-                    <input type="text" pattern="^[a-zA-Zа-яА-Я -]+$" required minlength="2" maxlength="200"
+                    <input type="text" pattern="^[a-zA-Zа-яА-Я -]+$" required minlength="2" maxlength="30"
                         name="place-name" class="form__input" id="place-name-input" placeholder="Название"
                         data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                     <span class="form__input-error place-name-input-error"></span>

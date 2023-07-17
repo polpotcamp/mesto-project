@@ -37,9 +37,9 @@ function likeCard(heart, id, numberlikes,evt) {
     }
 }
 /* отрисовываем какие карточки лайкнул пользователь */
-function printLikes(likes, like, heart) {
+function printLikes(likes, like, heart,userId) {
       for (let i = 0; i < likes; i++) {
-        if (profileName.textContent === like[i].name) {
+        if (userId === like[i]._id) {
           heart.classList.add('elements__heart_active')
         }
       }
@@ -77,7 +77,7 @@ function addCard(item) {
   /*провека кто создатель */
   checkAuthor(item.authorId,del,item.userId)
   /* отрисовываю кнопки лайка */
-  printLikes(item.likes, item.like, heart)
+  printLikes(item.likes, item.like, heart,item.userId)
   return itemElement
 }
 export { addCard }
